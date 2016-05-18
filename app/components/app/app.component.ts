@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
+import {WeightsComponent} from './../weights/weight.component';
 
 @Component({
   selector: 'my-app',
-  template: '<h1>My First Angular 2 App</h1>'
+  directives: [WeightsComponent],
+  template: `
+    <weights></weights>
+  `
 })
 export class AppComponent { }
