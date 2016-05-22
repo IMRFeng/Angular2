@@ -1,4 +1,4 @@
-# Angular2
+# Angular2 (version 2.0.0-rc.1)
 
 ## 1. Initialize application
 

@@ -5,7 +5,9 @@ import {WeightsComponent} from './../weights/weight.component';
   selector: 'my-app',
   directives: [WeightsComponent],
   template: `
-    <weights></weights>
+    <div class="container">
+      <weights></weights>
+    </div>
   `
 })
 export class AppComponent { }

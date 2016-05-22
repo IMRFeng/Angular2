@@ -1,18 +1,52 @@
-<div class="col-xs-2 col-xs-offset-5">
-  <img src="/assets/images/piggy.png" class="img-responsive" with="100" height="100"/>
+
+<div class="row">
+  <div class="col-xs-2 col-xs-offset-5">
+    <img src="/assets/images/piggy.png" class="img-responsive" with="100" height="100"/>
+  </div>
+</div>
+
+<nav class="navbar navbar-light bg-faded">
+  <button (click)="changeYear(-1)" type="button" class="btn btn-default">
+    <i class="fa fa-chevron-left"></i></button>
+  <label>{{selectedYear}}</label>
+  <button (click)="changeYear(1)" type="button" class="btn btn-default"><i class="fa fa-chevron-right"></i></button>
+  <span class="pull-xs-right">
+    <button class="btn btn-default" (click)="create()">Add Person</button>
+    <button class="btn btn-default" (click)="put(people)">Save</button>
+  </span>
+</nav>
+
+<div>
+ <base-chart class="chart" *ngIf="dataFormatted"
+                [datasets]="lineChart.chartData"
+                [labels]="lineChart.chartLabels"
+                [options]="lineChart.chartOptions"
+                [colors]="lineChart.chartColors"
+                [legend]="lineChart.lineChartLegend"
+                [chartType]="lineChart.chartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></base-chart>
 </div>
 
 <div class="table-responsive">
   <table class="table table-striped">
     <thead>
+      <th>&nbsp;</th>
       <th>Name</th>
       <th *ngFor="let month of months">{{month}}</th>
+      <th>&nbsp;</th>
     </thead>
     <tbody>
-      <tr *ngFor="let person of people">
-        <td>{{person.FullName}}</td>
+      <tr *ngFor="let person of people; let i = index">
+        <td style="background-color: {{colors[i]}}">{{colors[i]}}</td>
+        <td>
+          <input class="name" [(ngModel)]="person.FullName" />
+        </td>
         <td class="text-xs-center" *ngFor="let weight of person.Weights">
           <input class="text-xs-center" (change)="changeValue(people)" [(ngModel)]="weight.Kg" />
+        </td>
+        <td>
+          <button (click)="delete(person)" class="btn btn-default"><i class="fa fa-trash"></i></button>
         </td>
       </tr>
     </tbody>
