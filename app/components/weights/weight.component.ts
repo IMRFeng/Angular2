@@ -21,12 +21,12 @@ export class WeightsComponent implements OnInit {
   lineChart = new Chart();
   colors = ['red', 'blue', 'green', 'orange', 'pink', 'gold', 'purple', 'rose'];
   dataFormatted: boolean = false;
-    
-  constructor(private peopleService: PeopleService) {
+  
+  constructor(private _peopleService: PeopleService) {
   }
 
   ngOnInit() {
-    this.get(this.date);
+    this.getData(this.date);
   }
   
   changeValue(people) {
@@ -37,11 +37,11 @@ export class WeightsComponent implements OnInit {
   changeYear(amount) {
     this.date.setFullYear(this.date.getFullYear() + amount);
     this.selectedYear = this.date.getFullYear();
-    this.get(this.date);
+    this.getData(this.date);
   }
   
-  get(date: Date) {
-    this.peopleService.get(date)
+  getData(date: Date) {
+    this._peopleService.get(date)
         .subscribe(people => {
             this.people = people;
             this.formatChartData();
@@ -70,55 +70,51 @@ export class WeightsComponent implements OnInit {
     
     this.lineChart.chartOptions = {
         animation: false,
-        multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel %>: <%}%><%= value %>',
-        responsive: true
+        multiTooltipTemplate: '<%if (datasetLabel) {%><%=datasetLabel %>: <%}%><%= value %>',
+        responsive: true,
+        tooltips: {
+          enabled: true,
+          // backgroundColor: 'red'
+        }
     };
     
     this.dataFormatted = true;
   }
   
-  // events
-  public chartClicked(e:any):void {
-    console.log(e);
-  }
-
-  public chartHovered(e:any):void {
-    console.log(e);
-  }
-  
   formatColors() {
-    let _chartColors = [];
-    _chartColors.push(this.colors.map((color) => {
+    let _chartColors = this.colors.map((color) => {
       return {
-        fillColor: 'rgba(220,220,220, 0.1)',
-        strokeColor: color,
-        pointColor: color,
+        backgroundColor: 'rgba(220,220,220, 0.1)',
+        borderColor: color,
+        pointBorderColor: color,
         pointStrokeColor: '#fff',
         pointHighlightFill: '#fff',
-        pointHighlightStroke: color,
+        pointBackgroundColor: color,
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
       };
-    }));
+    });
+    
     this.lineChart.chartColors = _chartColors;
   }
     
-  create() {
+  addPerson() {
     let person = new Person();
-    this.peopleService.create(person, this.selectedYear)
+    this._peopleService.create(person, this.selectedYear)
       .subscribe((person) => {
           console.log(`successfully added person`);
           this.people = [...this.people, person];
       });
   }
 
-  put(people: Person[]) {
-    this.peopleService.put(people)
+  updatePerson(people: Person[]) {
+    this._peopleService.put(people)
       .subscribe((people) => {
           console.log(`successfully updated people`);
       });
   }
 
-  delete(person: Person) {
-    this.peopleService.delete(person)
+  deletePerson(person: Person) {
+    this._peopleService.delete(person)
       .subscribe((person) => {
           this.people = _.remove(this.people, (p) => {
               return p.Id !== person.Id;
@@ -127,4 +123,12 @@ export class WeightsComponent implements OnInit {
       });
   }
 
+  // events
+  public chartClicked(e:any):void {
+    console.log(e);
+  }
+
+  public chartHovered(e:any):void {
+    console.log(e);
+  }
 }

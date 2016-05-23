@@ -11,8 +11,8 @@
   <label>{{selectedYear}}</label>
   <button (click)="changeYear(1)" type="button" class="btn btn-default"><i class="fa fa-chevron-right"></i></button>
   <span class="pull-xs-right">
-    <button class="btn btn-default" (click)="create()">Add Person</button>
-    <button class="btn btn-default" (click)="put(people)">Save</button>
+    <button class="btn btn-default" (click)="addPerson()">Add Person</button>
+    <button class="btn btn-default" (click)="updatePerson(people)">Save</button>
   </span>
 </nav>
 
@@ -38,7 +38,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let person of people; let i = index">
-        <td style="background-color: {{colors[i]}}">{{colors[i]}}</td>
+        <td [style.background-color]="colors[i]"></td>
         <td>
           <input class="name" [(ngModel)]="person.FullName" />
         </td>
@@ -46,7 +46,7 @@
           <input class="text-xs-center" (change)="changeValue(people)" [(ngModel)]="weight.Kg" />
         </td>
         <td>
-          <button (click)="delete(person)" class="btn btn-default"><i class="fa fa-trash"></i></button>
+          <button (click)="deletePerson(person)" class="btn btn-default"><i class="fa fa-trash"></i></button>
         </td>
       </tr>
     </tbody>
